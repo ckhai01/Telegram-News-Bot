@@ -8,4 +8,4 @@ This GitHub page is mainly to share the source code of the Telegram News Bot. So
 - Search for news articles via Telegram 
 
 ## Download 
-Download "News Bot.py" and add in your Telegram API key. Feel free to make changes to the shambolic code as you see fit!
+Click on "Code" and "Download ZIP" to download the Python file. Feel free to make changes to the shambolic code as you see fit!
