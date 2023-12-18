@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# i have been tasked to comment this shambolic code.
+
 # random imports
 
 from newsapi import NewsApiClient
@@ -34,7 +38,7 @@ newsapi = NewsApiClient(api_key='fd95ae3de99a41b79fd5398cdd40e9a0')  # THIS IS T
 # If needed, change this to a new Telegram API key, and follow the documentation to set up the bot's cosmetic details.
 
 bot_token = ''  # Insert Telegram API key here
-bot_user_name = ''  # insert bot user name here
+bot_user_name = '' # Insert Telegram Bot username here (should be in the format "my_news_bot)
 
 TOKEN = bot_token
 bot = telebot.TeleBot(TOKEN)
@@ -111,6 +115,26 @@ def start_command(message):
         active[message.chat.id] = 'None'
         with open('data.json', 'w') as convert_file:
             convert_file.write(json.dumps(active))
+        bot.send_message(message.chat.id,
+                         'You may run the command /option [keyword] to fine tune what articles you wish to receive!\nFor example: /option Russia'
+                         )
+
+
+@bot.message_handler(commands=['unsub'])
+def unsub_command(message):
+    if message.chat.id in active.keys():
+        active.pop(message.chat.id)
+        bot.send_message(message.chat.id,
+                         'You have opted out of receiving daily articles.'
+                         )
+        with open('data.json', 'w') as convert_file:
+            convert_file.write(json.dumps(active))
+        return
+    else:
+
+        bot.send_message(message.chat.id,
+                         'You have not opted in to receive daily articles yet! Use /start to do so.'
+                         )
 
 
 @bot.message_handler(commands=['option'])
@@ -152,6 +176,7 @@ def daily_command(message):
 
         bot_message = "<a href='" + articleLink + "'>" + articleTitle \
             + '</a>'
+
 
         bot.send_message(message.chat.id, bot_message, parse_mode='HTML'
                          )
@@ -224,6 +249,7 @@ def search_news(message):
         bot.send_message(message.chat.id,
                          'No articles found within the past week.')
         return
+
 
     for i in range(3):
 
